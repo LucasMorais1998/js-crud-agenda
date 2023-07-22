@@ -1,18 +1,23 @@
-<%- include('includes/head') %>
+<%- include('includes/head') %> 
+<%- include('includes/navbar') %>
 
-<body>
-  <section class="container">
-    <h1>Erro 404</h1>
-    <p>Página não encontrada.</p>
-    <p>Desculpe, a página que você está tentando acessar não foi encontrada.</p>
-    <p>
-      Verifique se o endereço está correto ou
-      <a href="/">clique aqui</a>
-      para voltar à página inicial.
-    </p>
-  </section>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-2"></div>
 
-  <script src="./assets/js/bundle.js"></script>
-</body>
+    <div class="col-lg-8 my-5">
+      <h1 class="display-1 text-center">Erro 404</h1>
+      <p class="text-center lead">Página não encontrada.</p>
+      <p class="text-center lead">Desculpe, a página que você está tentando acessar não foi encontrada.</p>
+      <p class="text-center lead">
+        Verifique se o endereço está correto ou
+        <a href="/" >clique aqui</a>
+        para voltar à página inicial.
+      </p>
+    </div>
+
+    <div class="col-lg-2"></div>
+  </div>
+</div>
 
 <%- include('includes/footer') %>
