@@ -18,7 +18,23 @@ class Login {
 
   async login() {
     this.validate();
-    console.log('ok');
+
+    if (this.errors.length > 0) return;
+
+    this.user = await LoginModel.findOne({ email: this.body.email });
+
+    if (!this.user) {
+      this.errors.push('Usuário ou senha inválidos');
+      return;
+    }
+
+    if (!bcrypt.compareSync(this.body.password, this.user.password)) {
+      this.errors.push('Usuário ou senha inválidos');
+
+      this.user = null;
+
+      return;
+    }
   }
 
   async register() {
@@ -33,17 +49,15 @@ class Login {
     const salt = bcrypt.genSaltSync();
     this.body.password = bcrypt.hashSync(this.body.password, salt);
 
-    try {
-      this.user = await LoginModel.create(this.body);
-    } catch (error) {
-      console.error(error);
-    }
+    this.user = await LoginModel.create(this.body);
+
+    console.error(error);
   }
 
   async hasUser() {
-    const user = await LoginModel.findOne({ email: this.body.email });
+    this.user = await LoginModel.findOne({ email: this.body.email });
 
-    if (user)
+    if (this.user)
       this.errors.push('Ocorreu um erro ao cadastrar o usuário. Por favor, tente novamente.');
   }
 

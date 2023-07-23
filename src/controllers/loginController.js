@@ -1,8 +1,9 @@
 const Login = require('../models/LoginModel');
 
 exports.index = (req, res, next) => {
-  res.render('login');
-  return;
+  if (req.session.user) return res.render('private');
+
+  return res.render('login');
 };
 
 exports.register = async (req, res, next) => {
@@ -33,7 +34,40 @@ exports.register = async (req, res, next) => {
 };
 
 exports.login = async (req, res, next) => {
-  const userLogin = new Login(req.body);
-  await userLogin.login();
-  res.send(userLogin.body);
+  try {
+    const loginUser = new Login(req.body);
+
+    await loginUser.login();
+
+    if (loginUser.errors.length > 0) {
+      req.flash('errors', loginUser.errors);
+
+      req.session.save(function () {
+        res.redirect('/login/index');
+      });
+
+      return;
+    }
+
+    req.flash('success', 'Login efetuado com sucesso.');
+
+    req.session.user = loginUser.user;
+
+    req.session.save(function () {
+      res.redirect('/login/index');
+    });
+  } catch (e) {
+    console.error(e);
+    return res.render('404');
+  }
+};
+
+exports.logout = async (req, res, next) => {
+  try {
+    req.session.destroy();
+    res.redirect('/');
+  } catch (e) {
+    console.error(e);
+    return res.render('404');
+  }
 };
