@@ -34,6 +34,16 @@ class Contact {
     return contact;
   }
 
+  async editContact(id) {
+    if (typeof id !== 'string') return;
+
+    this.validate();
+
+    if (this.errors.length > 0) return;
+
+    this.contact = await ContactModel.findByIdAndUpdate(id, this.body, { new: true });
+  }
+
   validate() {
     this.cleanUp();
 
