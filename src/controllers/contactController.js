@@ -1,7 +1,9 @@
 const Contact = require('../models/ContactModel');
 
 exports.index = (req, res, next) => {
-  res.render('contact');
+  res.render('contact', {
+    contact: {},
+  });
 };
 
 exports.register = async (req, res, next) => {
@@ -27,4 +29,16 @@ exports.register = async (req, res, next) => {
     console.error(e);
     return res.render('404');
   }
+};
+
+exports.editContact = async (req, res, next) => {
+  if (!req.params.id) return res.render('404');
+
+  const contact = await Contact.getContact(req.params.id);
+
+  if (!contact) return res.render('404');
+
+  res.render('contact', {
+    contact,
+  });
 };
