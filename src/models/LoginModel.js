@@ -50,8 +50,6 @@ class Login {
     this.body.password = bcrypt.hashSync(this.body.password, salt);
 
     this.user = await LoginModel.create(this.body);
-
-    console.error(error);
   }
 
   async hasUser() {
