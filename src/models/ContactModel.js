@@ -26,6 +26,14 @@ class Contact {
     this.contact = await ContactModel.create(this.body);
   }
 
+  static async getContact(id) {
+    if (typeof id !== 'string') return;
+
+    const contact = await ContactModel.findById(id);
+
+    return contact;
+  }
+
   validate() {
     this.cleanUp();
 
