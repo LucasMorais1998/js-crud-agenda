@@ -1,13 +1,7 @@
-const HomeModel = require('../models/HomeModel');
+const Contact = require('../models/ContactModel');
 
-exports.homePage = (req, res, next) => {
-  res.render('index', {
-    title: 'Title',
-  });
-  return;
-};
+exports.index = async (req, res, next) => {
+  const contacts = await Contact.getContacts();
 
-exports.postPage = (req, res, next) => {
-  res.send(req.body);
-  return;
+  res.render('index', { contacts });
 };
