@@ -19,7 +19,11 @@ const app = express();
 
 const connectionString = process.env.CONNECTIONSTRING;
 mongoose
-  .connect(connectionString, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(connectionString, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+  })
   .then(() => {
     console.log('connect to database 📦');
     app.emit('databaseConnected');
