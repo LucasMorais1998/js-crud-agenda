@@ -34,6 +34,20 @@ class Contact {
     return contact;
   }
 
+  static async getContacts() {
+    const contacts = await ContactModel.find().sort({ createdAt: -1 });
+
+    return contacts;
+  }
+
+  static async deleteContact(id) {
+    if (typeof id !== 'string') return;
+
+    const contact = await ContactModel.findOneAndDelete({ _id: id });
+    
+    return contact;
+  }
+
   async editContact(id) {
     if (typeof id !== 'string') return;
 
