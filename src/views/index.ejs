@@ -7,19 +7,33 @@
 
     <div class="col-lg-8 my-3">
       <h1 class="text-center">Agenda</h1>
-      <p class="text-center lead">Seus contatos estão abaixo</p>
+      <p class="text-center lead">Seus contatos estão abaixo:</p>
+
+      <%- include('includes/messages') %>
     </div>
 
-    <%- include('includes/messages') %>
-
     <div class="table-responsive">
+      
       <table class="table my-3">
-        <tr>
-          <td>Lucas</td>
-          <td>Morais</td>
-          <td>123456789</td>
-          <td>email@email.com</td>
-        </tr>
+        <% if (contacts.length > 0) { %>
+          <% contacts.forEach((contact) => { %>
+            <tr>
+              <td><%= contact.name %></td>
+              <td><%= contact.lastName %></td>
+              <td><%= contact.email %></td>
+              <td><%= contact.tel %></td>
+              <td>
+                <a href="/contact/index/<%= contact._id %>" class="btn btn-success">Editar</a>
+              </td>
+              <td>
+                <a href="/contact/delete/<%= contact._id %>" class="btn btn-danger">Excluir</a>
+              </td>
+            </tr>
+          <% }); %>
+        <% } else { %>
+          <p class="text-center lead">Sem contatos cadastrados. Clique <a href="/contact/index" >aqui</a> para cadastrar um novo contato</p>
+          
+        <% } %>
       </table>
     </div>
 

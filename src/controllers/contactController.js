@@ -47,25 +47,39 @@ exports.editContact = async (req, res, next) => {
   try {
     if (!req.params.id) return res.render('404');
 
-  const contact = new Contact(req.body);
+    const contact = new Contact(req.body);
 
-  await contact.editContact(req.params.id)
+    await contact.editContact(req.params.id);
 
-  if (contact.errors.length > 0) {
-    req.flash('errors', contact.errors);
+    if (contact.errors.length > 0) {
+      req.flash('errors', contact.errors);
 
-    req.session.save(() => res.redirect('/contact/index'));
+      req.session.save(() => res.redirect('/contact/index'));
+
+      return;
+    }
+
+    req.flash('success', 'Contato editado com sucesso');
+
+    req.session.save(() => res.redirect(`/contact/index/${contact.contact._id}`));
 
     return;
-  }
-
-  req.flash('success', 'Contato editado com sucesso');
-
-  req.session.save(() => res.redirect(`/contact/index/${contact.contact._id}`));
-
-  return;
   } catch (error) {
     console.error(error);
     return res.render('404');
   }
+};
+
+exports.deleteContact = async (req, res, next) => {
+  if (!req.params.id) return res.render('404');
+
+  const contact = await Contact.deleteContact(req.params.id);
+
+  if (!contact) return res.render('404');
+
+  req.flash('success', 'Contato deletado com sucesso');
+
+  req.session.save(() => res.redirect(`/`));
+
+  return;
 };
